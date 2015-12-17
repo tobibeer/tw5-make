@@ -1,0 +1,9 @@
+created: 20151217131932309
+creator: Tobias Beer
+modified: 20151217132008974
+tabs: Info Operand Examples Install
+tags: Plugins Filters
+title: make
+type: text/vnd.tiddlywiki
+
+<<plugin-docs make>>

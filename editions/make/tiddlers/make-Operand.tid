@@ -1,0 +1,46 @@
+created: 20151217132224423
+creator: Tobias Beer
+modified: 20151217135555458
+title: make-Operand
+type: text/vnd.tiddlywiki
+
+The operand of the ''make'' filter allows you to specify how and how many titles you want created.
+
+You can specify a title pattern based on whichever strings you desire and various placeholders. You can specify further options, separated via backslash `\` and always declared as `option:value`, e.g.:
+
+<<` """{{{ [make[the pattern %count% \ max:2]] }}}""">>
+
+!! Pattern Placeholders
+
+@@.note
+''Note:'' Should you not specify a pattern, it will default to `<<currentTiddler>>`.
+@@
+
+; `%date%`
+: a datestamp of the current time
+:: by default the format also used at the ''modified'' field: `YYYY0MM0DD0hh0mm0ss`
+; `%count%`
+: the current count
+; `%max%`
+: the maximum number generated
+; `<<variable>>`
+: a wikitext variable
+:: no support for actual macro invocations
+; `{{text!!reference}}`
+: a text reference retrieving a given tiddler's text or another field / data
+; `random()`
+: a 16 letter random string
+: to make it shorter, specify a number in the brackets, e.g. `random(8)`
+; `%uuid%`
+: a generated, universally unique identifier
+
+!! Options
+
+; `min: <number>`
+: the starting number
+; `inc: <number>`
+: an increment number
+; `max: <number>`
+: a maximum number
+; `date-format: <dateFormatString>`
+: a format-string used to format the `%date%` placeholder

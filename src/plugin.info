@@ -1,0 +1,12 @@
+{
+    "title": "$:/plugins/tobibeer/make",
+    "description": "Generate unique or random tiddler titles",
+    "author": "Tobias Beer",
+    "version": "0.5.0",
+    "core-version": ">=5.1.9",
+    "source": "https://github.com/tobibeer/tw5-make",
+    "documentation": "https://tobibeer.github.io/tw5-make",
+    "plugin-type": "plugin",
+	"requires": "",
+	"list": "readme"
+}

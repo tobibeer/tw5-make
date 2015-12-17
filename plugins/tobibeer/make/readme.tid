@@ -1,0 +1,19 @@
+title: $:/plugins/tobibeer/make/readme
+
+Provides the filter `[make[]]` to create unique, even random titles or text.
+
+; Placeholders
+: `%date%` — a datestamp of the current time (format: `YYYY0MM0DD0hh0mm0ss`)
+: `%count%` — current count (see options: ''min'', ''inc'', ''max'')
+: `%max%` — max number generated
+: `<<variable>>`
+: `{{text!!reference}}`
+: `random()` — a 16 letter random string, or short, e.g.: `random(8)`
+: `%uuid%` — a universally unique identifier
+; Options
+: `min: 1` — starting number
+: `inc: 1` — increment
+: `max: 2` — max number
+: `date-format: <dateFormatString>` — for `%date%`
+; Documentation / examples / demos...
+: http://tobibeer.github.io/tw5-plugins#make

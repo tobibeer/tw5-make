@@ -1,0 +1,60 @@
+bar: baz
+created: 20151216232832188
+creator: Tobias Beer
+modified: 20151217135717520
+modifier: Tobias Beer
+tags: 
+title: make-Examples
+type: text/vnd.tiddlywiki
+
+!! Simple
+
+// Creates a new unique title based on the current tiddler //
+
+<$macrocall $name="`" text="""{{{ [make[]] }}}"""/>
+
+!! Make Three
+
+<$macrocall $name="`" text="""{{{ [make[max:3]] }}}"""/>
+
+!! Variable
+
+<$macrocall $name="`" text="""{{{ [make[<<version>>]] }}}"""/>
+
+!! Text-Reference
+
+<$macrocall $name="`" text="""{{{ [make[{{$:/SiteTitle}}]] }}}"""/>
+
+!! Current Date
+
+<$macrocall $name="`" text="""{{{ [make[%date%]] }}}"""/>
+
+!! Current Date With Custom Format
+
+<$macrocall $name="`" text="""{{{ [make[%date% \ date-format:0hh:0mm:0ss]] }}}"""/>
+
+!! Random
+
+<$macrocall $name="`" text="""{{{ [make[RANDOM(8)]] }}}"""/>
+
+!! UUID
+
+<$macrocall $name="`" text="""{{{ [make[%uuid%]] }}}"""/>
+
+!! Simple Increment
+
+<$macrocall $name="`" text="""{{{ [make[<<currentTiddler>> %count% \ max:3]] }}}"""/>
+
+!! Complex Increment
+
+<$macrocall $name="`" text="""{{{ [make[
+Incremented To %count%
+\ min:1 \ inc:2 \ max:10
+]] }}}"""/>
+
+!! Placeholder Parade
+
+<$macrocall $name="`" text="""{{{ [make[
+<<currentTiddler>>—{{!!bar}}—%count%/%max%—%date%—RANDOM(): %uuid% \
+date-format:YYYY0MM0DD
+]] }}}"""/>
