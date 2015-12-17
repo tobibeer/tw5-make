@@ -1,11 +1,9 @@
+title: make-Examples
 bar: baz
 created: 20151216232832188
 creator: Tobias Beer
 modified: 20151217135717520
 modifier: Tobias Beer
-tags: 
-title: make-Examples
-type: text/vnd.tiddlywiki
 
 !! Simple
 
@@ -23,7 +21,7 @@ type: text/vnd.tiddlywiki
 
 !! Text-Reference
 
-<$macrocall $name="`" text="""{{{ [make[{{$:/SiteTitle}}]] }}}"""/>
+<$macrocall $name="`" text="""{{{ [make[{{!!modified}}]] }}}"""/>
 
 !! Current Date
 
@@ -55,6 +53,6 @@ Incremented To %count%
 !! Placeholder Parade
 
 <$macrocall $name="`" text="""{{{ [make[
-<<currentTiddler>>—{{!!bar}}—%count%/%max%—%date%—RANDOM(): %uuid% \
+<<currentTiddler>>—{{appear-Examples!!bar}}—%count%/%max%—%date%—RANDOM(): %uuid% \
 date-format:YYYY0MM0DD
 ]] }}}"""/>
