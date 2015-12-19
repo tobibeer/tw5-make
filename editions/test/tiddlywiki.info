@@ -1,0 +1,14 @@
+{
+	"description": "TiddlyWiki core tests",
+	"plugins": [
+		"tiddlywiki/jasmine",
+		"tobibeer/make"
+	],
+	"themes": [
+		"tiddlywiki/vanilla"
+	],
+	"build": {
+		"index": [
+			"--rendertiddler","$:/core/save/all","test.html","text/plain"]
+	}
+}
