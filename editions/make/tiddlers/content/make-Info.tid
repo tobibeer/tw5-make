@@ -1,6 +1,6 @@
 created: 20151217132048828
 creator: Tobias Beer
-modified: 20151219183003473
+modified: 20151219190933338
 modifier: Tobias Beer
 tags: 
 title: make-Info
@@ -11,7 +11,7 @@ The plugin $:/plugins/tobibeer/make provides:
 ; ''make[]''
 : a filter that allows to create unique or random tiddler titles
 
-As a filter, it entirely ignores any input and always only creates unique, even random titles. There are many variants for you to specify exactly how you want your titles to be created using the [[operand|make-Operand]].
+If no input titles are passed to it, e.g. via  `[[]make[]]` it will create unique, even random output titles, otherwise operate on given input titles. There are many ways for you to specify exactly how you want your titles to be created using the [[operand|make-Operand]].
 
 !! Unique
 
