@@ -1,58 +1,122 @@
-title: make-Examples
 bar: baz
 created: 20151216232832188
 creator: Tobias Beer
-modified: 20151217135717520
+modified: 20151219181646905
 modifier: Tobias Beer
+title: make-Examples
+type: text/vnd.tiddlywiki
 
 !! Simple
 
-// Creates a new unique title based on the current tiddler //
+// Creates a new unique title based on the current tiddler: //
 
-<$macrocall $name="`" text="""{{{ [make[]] }}}"""/>
+<<` """{{{ [[]make[]] }}}""">>
 
 !! Make Three
 
-<$macrocall $name="`" text="""{{{ [make[max:3]] }}}"""/>
+<<` """{{{ [[]make[max:3]] }}}""">>
+
+!! Operating on input titles
+
+// Replaces the `%title%` placeholder with each input title in turn: //
+
+<<` """{{{ a b c +[make[prefix %title% suffix]] }}}""">>
+
+!! Understanding Max
+
+// Max is interpreted as: //
+
+''1 (default) if no input titles are used:''
+
+<<` """{{{ [[]make[%count%/%max%]] }}}""">>
+
+''the number of input titles if not specified as an option:''
+
+<<` """{{{ a b c +[make[%count%/%max%]] }}}""">>
+
+''specified max, if smaller than the number of input titles:''
+
+<<` """{{{ a b c +[make[%count%/%max%\max:2]] }}}""">>
+
+''the number of input titles if smaller than specified max:''
+
+<<` """{{{ a b c +[make[%count%/%max%\max:5]] }}}""">>
+
+!! No Separator Before Unique Number
+
+<<` """{{{ [[]make[sep:]] }}}""">>
+
+!! Custom Separator
+
+<<` """{{{ [[]make[sep:-]] }}}""">>
+
+!! Specified Tiddler
+
+<<` """{{{ [[]make[%tiddler% tabs: {{!!tabs}}\tiddler:make]] }}}
+
+; proof
+: {{make!!tabs}}""">>
 
 !! Variable
 
-<$macrocall $name="`" text="""{{{ [make[<<version>>]] }}}"""/>
+<$macrocall $name="`" text="""{{{ [[]make[<<version>>]] }}}"""/>
 
 !! Text-Reference
 
-<$macrocall $name="`" text="""{{{ [make[{{!!modified}}]] }}}"""/>
+<<` """{{{ [[]make[{{!!modified}}]] }}}""">>
 
-!! Current Date
+!! Date-Stamp For Current Time
 
-<$macrocall $name="`" text="""{{{ [make[%date%]] }}}"""/>
+// The ~TiddlyWiki default as `YYYY0MM0DD0hh0mm0ss...` up to the millisecond: //
 
-!! Current Date With Custom Format
+<<` """{{{ [[]make[%date%]] }}}""">>
 
-<$macrocall $name="`" text="""{{{ [make[%date% \ date-format:0hh:0mm:0ss]] }}}"""/>
+!! Date-/ Time-Stamp With Custom Format
+
+<<` """{{{ [[]make[%date% \ date-format:0hh:0mm:0ss]] }}}""">>
 
 !! Random
 
-<$macrocall $name="`" text="""{{{ [make[RANDOM(8)]] }}}"""/>
+// alphanumeric, default length is 16 characters://
+
+<<` """* {{{ [[]make[RANDOM()]] }}}
+* {{{ [[]make[RANDOM(8)]] }}}""">>
 
 !! UUID
 
-<$macrocall $name="`" text="""{{{ [make[%uuid%]] }}}"""/>
+<<` """{{{ [[]make[%uuid%]] }}}""">>
 
 !! Simple Increment
 
-<$macrocall $name="`" text="""{{{ [make[<<currentTiddler>> %count% \ max:3]] }}}"""/>
+<$macrocall $name="`" text="""{{{ [[]make[<<currentTiddler>> %count% \ max:3]] }}}"""/>
 
 !! Complex Increment
 
-<$macrocall $name="`" text="""{{{ [make[
+<<` """{{{ [[]make[
 Incremented To %count%
 \ min:1 \ inc:2 \ max:10
-]] }}}"""/>
+]] }}}""">>
+
+!! Unique Field
+
+// Returns `title1`, since this tiddler already has a ''title'' field://
+
+<<` """{{{ [[]make[title\unique:field\max:2]] }}}""">>
+
+!! Unique Index
+
+// Creates two unique indexes using a custom separator for the index `background:` for the defined ''tiddler'' $:/palettes/Vanilla, which already has this index defined://
+
+<<` """{{{ [[]make[background\
+unique:index\
+max:2\
+sep:-\
+tiddler:$:/palettes/Vanilla
+]] }}}""">>
 
 !! Placeholder Parade
 
-<$macrocall $name="`" text="""{{{ [make[
+<$macrocall $name="`" text="""{{{ [[]make[
 <<currentTiddler>>—{{appear-Examples!!bar}}—%count%/%max%—%date%—RANDOM(): %uuid% \
 date-format:YYYY0MM0DD
 ]] }}}"""/>

@@ -1,6 +1,7 @@
 created: 20151217132224423
 creator: Tobias Beer
-modified: 20151217135555458
+modified: 20151219182752387
+modifier: Tobias Beer
 title: make-Operand
 type: text/vnd.tiddlywiki
 
@@ -28,19 +29,31 @@ You can specify a title pattern based on whichever strings you desire and variou
 :: no support for actual macro invocations
 ; `{{text!!reference}}`
 : a text reference retrieving a given tiddler's text or another field / data
+; `%tiddler%`
+: the tiddler defined using the ''tiddler'' option, see below
+; `%title%`
+: when operating on input titles, the currently handled title
+: when not operating on input titles, the (current) tiddler title
 ; `random()`
-: a 16 letter random string
-: to make it shorter, specify a number in the brackets, e.g. `random(8)`
+: by default, a 16 letter random alphanumeric string
+: for a custom length, specify a number in the brackets, e.g. `random(8)`
 ; `%uuid%`
 : a generated, universally unique identifier
 
-!! Options
+!! Make Options
 
-; `min: <number>`
+; `min:<number>`
 : the starting number
-; `inc: <number>`
+; `inc:<number>`
 : an increment number
-; `max: <number>`
+; `max:<number>`
 : a maximum number
-; `date-format: <dateFormatString>`
+; `sep:<separator-string>`
+: a separator used before the unique count
+; `date-format:<dateFormatString>`
 : a format-string used to format the `%date%` placeholder
+; `tiddler:<title>`
+: a tiddler used as a fallback for text-references, instead of current tiddler
+: also used for ''unique'', below
+; `unique:field` / `unique:index`
+: does not check uniqueness based on tiddler titles but rather for a field or index of a specified ''tiddler'', by default the current tiddler

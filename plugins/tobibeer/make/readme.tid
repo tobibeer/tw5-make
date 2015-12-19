@@ -6,14 +6,23 @@ Provides the filter `[make[]]` to create unique, even random titles or text.
 : `%date%` — a datestamp of the current time (format: `YYYY0MM0DD0hh0mm0ss`)
 : `%count%` — current count (see options: ''min'', ''inc'', ''max'')
 : `%max%` — max number generated
+: `%tiddler%` — defined ''tiddler'' or current
+: `%title%` — input title
+: when not operating on input titles, the (current) tiddler title
+
 : `<<variable>>`
 : `{{text!!reference}}`
 : `random()` — a 16 letter random string, or short, e.g.: `random(8)`
 : `%uuid%` — a universally unique identifier
 ; Options
-: `min: 1` — starting number
-: `inc: 1` — increment
-: `max: 2` — max number
-: `date-format: <dateFormatString>` — for `%date%`
+: `min:1` — starting number
+: `inc:1` — increment
+: `max:2` — max number
+: `sep:-` — separator before unique count
+: `date-format:<dateFormatString>` — for `%date%`
+: `tiddler:foo` — used for ''unique'' and text-references
+: `unique:field` — unique field-name instead of global titles
+: `unique:index` — unique data tiddler index
+
 ; Documentation / examples / demos...
 : http://tobibeer.github.io/tw5-plugins#make

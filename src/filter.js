@@ -18,34 +18,53 @@ a filter to generate tiddler titles
 The make filter function...
 */
 exports.make = function(source,operator,options) {
- 	var count,date,ex,end,match,rand,random,start,uuid,
+ 	var date,ex,end,input,match,random,start,uuid,
+		titles=[],
 		widget = options.widget,
 		wiki = options.wiki,
 		results = [],
 		// Init make options
-		make = {
-			dateFormat:"YYYY0MM0DD0hh0mm0ss",
+		m = {
 			inc:1,
-			max:1,
-			min:1
+			min:1,
+			// default separator
+			sep:" ",
+			// default tiddler => current tiddler
+			tiddler:widget ? widget.getVariable("currentTiddler") : ""
 		},
-		// Current tiddler
-		current = widget ? widget.getVariable("currentTiddler") : "",
 		// The regular expressions for replacing count, date, and random
+		reTITLE = /\%TITLE\%/mgi,
 		reCOUNT = /\%COUNT\%/mgi,
 		reDATE = /\%DATE\%/mgi,
 		reUUID = /\%UUID\%/mgi,
 		reMAX = /\%MAX\%/mgi,
 		reRAND = /RANDOM\((\d*)\)/mgi,
+		reTIDDLER = /\%TIDDLER\%/mgi,
 		// The regex for make options
 		reVAR = /^\s*([\$\w\d\-\_\/]*):(.*)(?:\s*)$/,
-		// Trims that random number to the desired length, max 16
-		getRandom = function(match,num){
-			return num ? rand.substr(0,Math.min(16,num)) : rand;
+		// Replaces a random number placeholder with a random number of a given length N, default 16
+		getRandom = function(match,N){
+			N = N || 16;
+			var rand = '',
+				char = function(){
+					var n= Math.floor(Math.random()*62);
+					return (
+						//1-10
+						n<10 ? n :
+						//A-Z
+						n<36 ? String.fromCharCode(n+55) :
+						//a-z
+						String.fromCharCode(n+61)
+					);
+				};
+			while(N--) {
+				rand += char();
+			}
+			return rand;
 		},
 		//Replaces {{text!!references}} in the make expression
 		replaceRefs = function(match,ref) {
-			return wiki.getTextReference(ref,"",current);
+			return wiki.getTextReference(ref,"",m.tiddler);
 		},
 		//Replaces <<variables>> in the make expression
 		replaceVars = function(match,v) {
@@ -59,13 +78,27 @@ exports.make = function(source,operator,options) {
 		},
 		unique = function(list,title) {
 			var c = 0,
-				result=title;
-			while(list.indexOf(result) >= 0 || wiki.tiddlerExists(result)) {
+				result = title,
+				tid = wiki.getTiddler(m.tiddler),
+				data = m.uniq === 1 ? wiki.getTiddlerData(m.tiddler,{}) : 0;
+			while(
+				list.indexOf(result) >= 0 ||
+				!m.uniq && wiki.tiddlerExists(result) ||
+				m.uniq === 0 && tid.hasField(result) ||
+				m.uniq === 1 && $tw.utils.hop(data,result)
+			) {
 				c++;
-				result = title + " " + c.toString();
+				result = title + m.sep + c.toString();
 			}
 			return result;
 		};
+	// Iterate input
+	source(function(tiddler,title) {
+		// Add to titles
+		titles.push(title);
+	});
+	// Has input titles?
+	input = !(titles.length === 1 && !titles[0]);
 	// Return errors
 	try {
 		// Each
@@ -88,56 +121,81 @@ exports.make = function(source,operator,options) {
 							case "inc":
 								// Get any of these as integer while replacing any variables or text-references
 								v = parseInt(replaceRV(match[2]));
-								// Not an integer?
-								if(isNaN(v)) {
+								// Not an integer or smaller than 0?
+								if(isNaN(v) || v < 1) {
 									// Init as 1
 									v = 1;
 								}
 								// Set option to value
-								make[match[1]] = v;
+								m[match[1]] = v;
+								break;
+							case "sep":
+								m.sep = match[2];
+								break;
+							case "unique":
+								m.uniq = match[2] === "field" ? 0 : 1;
+								break;
+							case "tiddler":
+								m.tiddler = match[2];
 								break;
 							// Date format?
 							case "date-format":
 								// Set to this format
-								make.dateFormat = match[2].trim();
+								m.dateFormat = match[2].trim();
 								break;
 						}
 					// Otherwise, if not an option, only once
-					} else if(make.expr === undefined) {
+					} else if(m.expr === undefined) {
 						// Save as make expression
-						make.expr = arg;
+						m.expr = arg;
 					}
 				}
 			}
 		);
-		if(make.expr === undefined) {
-			make.expr = "<<currentTiddler>>";
+		// Do we want unique field-names
+		if(m.uniq === 0) {
+			// Blank separator => use empty, otherwise trim
+			m.sep = m.sep === " " ? "" : m.sep.trim();
 		}
-		// Max shall not be smaller than min
-		if(make.max<make.min) {
-			make.max = make.min;
+		// No expression?
+		if(m.expr === undefined) {
+			// Take current tiddler
+			m.expr = "%tiddler%";
+		}
+		// Operating on input titles?
+		if(input) {
+			// If specified, calculate min of num titles and specified value
+			// Otherwise use num input titles
+			m.max = m.max ? Math.min(titles.length,m.max) : titles.length;
+		}
+		// Max undefined or smaller than min
+		if(!m.max || m.max < m.min) {
+			// Set to min
+			m.max = m.min;
 		}
 		// Just to be safe, remember when we started and when we should end, if loops go awry
 		start = new Date();
 		end = start;
 		// Init counter
-		count = make.min;
+		m.count = m.min;
 		// Check whether random number is desired
-		random = reRAND.test(make.expr);
-		if(reDATE.test(make.expr)) {
-			// Generate new date based on format string, only once
-			date = $tw.utils.formatDateString(start, make.dateFormat);
+		random = reRAND.test(m.expr);
+		if(reDATE.test(m.expr)) {
+			// Generate new date string (only once)
+			date = m.dateFormat ?
+				// Based on format string, if defined
+				$tw.utils.formatDateString(start, m.dateFormat) :
+				// Otherwise also return milliseconds
+				$tw.utils.stringifyDate(start);
 		}
 		// UUID desired?
-		uuid = reUUID.test(make.expr);
+		uuid = reUUID.test(m.expr);
 		// Repeat
 		do {
 			// Copy expression while replacing any variables or text-references
-			ex = replaceRV(make.expr);
+			ex = replaceRV(m.expr);
 			// Do we want a random string?
 			if(random) {
-				// Well, then generate that random string
-				rand = Math.random().toString(36).substr(2);
 				// Replace placeholder with random value
 				ex = ex.replace(reRAND,getRandom);
 			}
@@ -148,21 +206,23 @@ exports.make = function(source,operator,options) {
 			}
 			// Replace placeholders for count and date...
 			ex = unique(results,ex
-				.replace(reCOUNT, count)
-				.replace(reMAX, make.max)
+				.replace(reTIDDLER, m.tiddler)
+				.replace(reTITLE, input ? titles[m.count-1] : m.tiddler)
+				.replace(reMAX, m.max)
+				.replace(reCOUNT, m.count)
 				.replace(reDATE, date)
 			);
 			// Add to output
 			results.push(ex);
 			// Next generated item
-			count = count + make.inc;
+			m.count = m.count + m.inc;
 			// Every 500
-			if(count % 500 === 0) {
+			if(m.count % 500 === 0) {
 				// Check what time it is
 				end = new Date();
 			}
 		// So long as our counter is below max and we're taking no longer than 5 seconds
-		} while (count <= make.max && end - start < 5000);
+		} while (m.count <= m.max && end - start < 5000);
 	// On error...
 	} catch(e) {
 		return ["Error in make filter:\n" + e];

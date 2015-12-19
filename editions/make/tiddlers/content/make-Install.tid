@@ -1,13 +1,16 @@
+title: make-Install
 created: 20151217132014442
 creator: Tobias Beer
 modified: 20151217132713623
-tags: 
-title: make-Install
-type: text/vnd.tiddlywiki
 
 <<plugin-install make>>
 
 !! Version History
 
+; 0.5.5 / 2015-12-19
+: now handles input titles as well
+: added options `sep`, `tiddler`, `unique`
+: added placeholders `%title%`, `%tiddler%`
+: added test-suite
 ; 0.5.0 / 2015-12-17
 : initial release
