@@ -1,5 +1,5 @@
 /*\
-title: test-make.js
+title: test-tobibeer/make-filter.js
 type: application/javascript
 tags: [[$:/tags/test-spec]]
 

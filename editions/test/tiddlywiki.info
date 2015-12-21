@@ -1,5 +1,5 @@
 {
-	"description": "TiddlyWiki core tests",
+	"description": "tobibeer/make tests",
 	"plugins": [
 		"tiddlywiki/jasmine",
 		"tobibeer/make"
