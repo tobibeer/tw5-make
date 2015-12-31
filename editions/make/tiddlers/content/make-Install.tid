@@ -1,12 +1,16 @@
-title: make-Install
 created: 20151217132014442
 creator: Tobias Beer
-modified: 20151217132713623
+modified: 20151231143949988
+modifier: Tobias Beer
+title: make-Install
+type: text/vnd.tiddlywiki
 
 <<plugin-install make>>
 
 !! Version History
 
+; 0.5.6 / 2015-12-31
+: added zero-padding as operand option via `pad:max` or `pad:4`
 ; 0.5.5 / 2015-12-19
 : now handles input titles as well
 : added options `sep`, `tiddler`, `unique`

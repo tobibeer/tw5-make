@@ -135,6 +135,9 @@ exports.make = function(source,operator,options) {
 							case "unique":
 								m.uniq = match[2] === "field" ? 0 : 1;
 								break;
+							case "pad":
+								m.pad = parseInt(match[2]);
+								break;
 							case "tiddler":
 								m.tiddler = match[2];
 								break;
@@ -161,6 +164,11 @@ exports.make = function(source,operator,options) {
 		if(m.expr === undefined) {
 			// Take current tiddler
 			m.expr = "%tiddler%";
+		}
+		// Padding defined but NaN
+		if(m.pad !== undefined && isNaN(m.pad)) {
+			// Pad by max or at least two digits
+			m.pad = m.max? m.max.toString().length : 2;
 		}
 		// Operating on input titles?
 		if(input) {
@@ -209,7 +217,7 @@ exports.make = function(source,operator,options) {
 				.replace(reTIDDLER, m.tiddler)
 				.replace(reTITLE, input ? titles[m.count-1] : m.tiddler)
 				.replace(reMAX, m.max)
-				.replace(reCOUNT, m.count)
+				.replace(reCOUNT, m.pad ? $tw.utils.pad(m.count,m.pad) : m.count)
 				.replace(reDATE, date)
 			);
 			// Add to output

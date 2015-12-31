@@ -23,6 +23,8 @@ Provides the filter `[make[]]` to create unique, even random titles or text.
 : `tiddler:foo` — used for ''unique'' and text-references
 : `unique:field` — unique field-name instead of global titles
 : `unique:index` — unique data tiddler index
+: `pad:max` — zero-pad count to length of max
+: `pad:5` — zero-pad count to 5 digits: 00001
 
 ; Documentation / examples / demos...
 : http://tobibeer.github.io/tw5-plugins#make

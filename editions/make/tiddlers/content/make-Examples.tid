@@ -1,7 +1,7 @@
 bar: baz
 created: 20151216232832188
 creator: Tobias Beer
-modified: 20151219181646905
+modified: 20151231144820804
 modifier: Tobias Beer
 title: make-Examples
 type: text/vnd.tiddlywiki
@@ -41,6 +41,16 @@ type: text/vnd.tiddlywiki
 ''the number of input titles if smaller than specified max:''
 
 <<` """{{{ a b c +[make[%count%/%max%\max:5]] }}}""">>
+
+!! Zero-Pad Count
+
+''Zero-pad count to max:''
+
+<<` """{{{ [[]make[%count%\max:31\pad:max]limit[3]] }}}""">>
+
+''Zero-pad count to 5 digits:''
+
+<<` """{{{ [[]make[%count%\max:3\pad:5]] }}}""">>
 
 !! No Separator Before Unique Number
 

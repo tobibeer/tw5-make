@@ -155,6 +155,16 @@ describe("test make filter", function() {
 			"a b c +[make[%title%\\max:5]]"
 		,fakeWidget).join(",")).toBe("a,b,c");
 	});
+	it("zero pad", function() {
+		expect(wiki.filterTiddlers(
+			"[[]make[%count%\\max:11\\pad:true]]"
+		,fakeWidget).join(",")).toBe("01,02,03,04,05,06,07,08,09,10,11");
+	});
+	it("zero pad by 4", function() {
+		expect(wiki.filterTiddlers(
+			"[[]make[%count%\\max:11\\pad:4]]"
+		,fakeWidget).join(",")).toBe("0001,0002,0003,0004,0005,0006,0007,0008,0009,0010,0011");
+	});
 });
 
 })();
