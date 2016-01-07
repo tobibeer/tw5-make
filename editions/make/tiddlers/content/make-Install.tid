@@ -1,6 +1,6 @@
 created: 20151217132014442
 creator: Tobias Beer
-modified: 20160107144436531
+modified: 20160107150408180
 modifier: Tobias Beer
 title: make-Install
 type: text/vnd.tiddlywiki
@@ -11,6 +11,7 @@ type: text/vnd.tiddlywiki
 
 ; 0.6.0 / 2015-01-07
 : allow to use zero-padding for increment when no `%count%` is used
+: performance increase for increment
 ; 0.5.6 / 2015-12-31
 : added zero-padding as operand option via `pad:max` or `pad:4`
 ; 0.5.5 / 2015-12-19
