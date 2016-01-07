@@ -1,6 +1,6 @@
 created: 20151217132224423
 creator: Tobias Beer
-modified: 20151231144208694
+modified: 20160107144628854
 modifier: Tobias Beer
 title: make-Operand
 type: text/vnd.tiddlywiki
@@ -60,3 +60,4 @@ You can specify a title pattern based on whichever strings you desire and variou
 ; `pad:max` / `pad:5`
 : zero-pads `%count%` to either the length of max or the specified number of digits
 :: `pad:5` => `00001`
+:: if you do not use the `%count%` placeholder, the appended unique increment will be zero-padded instead

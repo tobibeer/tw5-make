@@ -77,19 +77,24 @@ exports.make = function(source,operator,options) {
 				.replace(/<<([^>]*)>>/mg, replaceVars);
 		},
 		unique = function(list,title) {
-			var c = 0,
-				result = title,
+			var result,
+				pad = m.pad && m.expr.indexOf("%count%") < 0 ? m.pad : 0,
 				tid = wiki.getTiddler(m.tiddler),
-				data = m.uniq === 1 ? wiki.getTiddlerData(m.tiddler,{}) : 0;
-			while(
+				data = m.uniq === 1 ? wiki.getTiddlerData(m.tiddler,{}) : 0,
+				c = pad ? 0 : -1;
+			do {
+				c++;
+				result = title + (
+					c > 0 ?
+					m.sep + (pad ? $tw.utils.pad(c,pad) : c) :
+					""
+				);
+			} while(
 				list.indexOf(result) >= 0 ||
-				!m.uniq && wiki.tiddlerExists(result) ||
+				m.uniq === undefined && wiki.tiddlerExists(result) ||
 				m.uniq === 0 && tid.hasField(result) ||
 				m.uniq === 1 && $tw.utils.hop(data,result)
-			) {
-				c++;
-				result = title + m.sep + c.toString();
-			}
+			);
 			return result;
 		};
 	// Iterate input
@@ -212,12 +217,17 @@ exports.make = function(source,operator,options) {
 				// Replace placeholder with uuid
 				ex = ex.replace(reUUID,$tw.utils.uuid());
 			}
-			// Replace placeholders for count and date...
+			// Replace placeholders
 			ex = unique(results,ex
+				// Context tiddler
 				.replace(reTIDDLER, m.tiddler)
+				// Input title or context tiddler
 				.replace(reTITLE, input ? titles[m.count-1] : m.tiddler)
+				// Max value
 				.replace(reMAX, m.max)
+				// Count value, zero-padded if needed
 				.replace(reCOUNT, m.pad ? $tw.utils.pad(m.count,m.pad) : m.count)
+				// Date value
 				.replace(reDATE, date)
 			);
 			// Add to output

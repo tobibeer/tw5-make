@@ -165,6 +165,11 @@ describe("test make filter", function() {
 			"[[]make[%count%\\max:11\\pad:4]]"
 		,fakeWidget).join(",")).toBe("0001,0002,0003,0004,0005,0006,0007,0008,0009,0010,0011");
 	});
+	it("zero padded increment", function() {
+		expect(wiki.filterTiddlers(
+			"[[]make[foo-\\max:3\\pad:4\\sep:]]"
+		,fakeWidget).join(",")).toBe("foo-0001,foo-0002,foo-0003");
+	});
 });
 
 })();
