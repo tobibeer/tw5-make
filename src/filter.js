@@ -78,23 +78,50 @@ exports.make = function(source,operator,options) {
 		},
 		unique = function(list,title) {
 			var result,
-				pad = m.pad && m.expr.indexOf("%count%") < 0 ? m.pad : 0,
+				pad = m.last || m.pad && m.expr.indexOf("%count%") < 0 ? m.pad : 0,
 				tid = wiki.getTiddler(m.tiddler),
 				data = m.uniq === 1 ? wiki.getTiddlerData(m.tiddler,{}) : 0,
-				c = pad ? 0 : -1;
+				// Set counter to...
+				c =
+					// Were we zero-padding the increment before and we still got the same title
+					m.last && m.lastTitle == title ?
+					// Take last count
+					m.last :
+					// If padding, init as 0, otherwise -1 (to first ignore separator and increment)
+					pad ? 0 : -1;
+			// While no unique title
 			do {
+				// Next count
 				c++;
+				// Generate title based on given title and
 				result = title + (
+					// Count above 0?
 					c > 0 ?
-					m.sep + (pad ? $tw.utils.pad(c,pad) : c) :
+					// Add separator
+					m.sep +
+					// Zero-pad the increment? then pad it, otherwise take it as is
+					(pad ? $tw.utils.pad(c,pad) : c) :
+					// Count is 0 (or less?) => just the title
 					""
 				);
+			// So long as
 			} while(
+				// The title is arelady in the results
 				list.indexOf(result) >= 0 ||
+				// We're asking for no uniqueness and the tiddler exists
 				m.uniq === undefined && wiki.tiddlerExists(result) ||
+				// We're asking for unique fields and the field exists at the context tiddler
 				m.uniq === 0 && tid.hasField(result) ||
+				// We're asking for unique indexes and the index exists at the context tiddler
 				m.uniq === 1 && $tw.utils.hop(data,result)
 			);
+			// If we were padding the increment
+			if(pad) {
+				// Remember the last count and title => so we don't have to start over
+				m.last = c;
+				m.lastTitle = title;
+			}
+			// Got a unique title, at last
 			return result;
 		};
 	// Iterate input
