@@ -1,8 +1,10 @@
 bar: baz
 created: 20151216232832188
 creator: Tobias Beer
-modified: 20151231144820804
+modified: 20160107113604282
 modifier: Tobias Beer
+summary: examples for the [[make]] filter
+tags: make Examples
 title: make-Examples
 type: text/vnd.tiddlywiki
 
